@@ -13,10 +13,13 @@ import de.kaizi99.bomberman.engine.maths.Vector3;
 
 public class RenderableModel extends Renderable{
 
+	ShaderProgram shader;
+	
 	int vaoID;
 	int vertexCount;
 	
 	public RenderableModel(Vector3[] positions, int[] indices) {
+		shader = new StaticShader();
 		vertexCount = indices.length;
 		createVAO();
 		bindIndicesBuffer(indices);
@@ -33,7 +36,9 @@ public class RenderableModel extends Renderable{
 	public void Render(Vector3 pos, Vector3 rot, Vector3 scale) {
 		GL30.glBindVertexArray(vaoID);
 		GL20.glEnableVertexAttribArray(0);
+		shader.start();
 		GL11.glDrawElements(GL11.GL_TRIANGLES, vertexCount, GL11.GL_UNSIGNED_INT, 0);
+		shader.stop();
 		GL20.glDisableVertexAttribArray(0);
 		unbindVAO();
 	}
