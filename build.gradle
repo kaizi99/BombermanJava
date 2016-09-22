@@ -13,6 +13,11 @@ repositories {
 	mavenCentral()
 }
 
-dependencies {
+project.ext.lwjglVersion = "3.0.0"
 
+dependencies {
+    compile "org.lwjgl:lwjgl:${lwjglVersion}"
+    compile "org.lwjgl:lwjgl-platform:${lwjglVersion}:natives-windows"
+    compile "org.lwjgl:lwjgl-platform:${lwjglVersion}:natives-linux"
+    compile "org.lwjgl:lwjgl-platform:${lwjglVersion}:natives-osx"
 }
