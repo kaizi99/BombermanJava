@@ -9,21 +9,36 @@ import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
-import de.kaizi99.bomberman.engine.maths.Vector3;
+import de.kaizi99.bomberman.engine.maths.Matrix4f;
+import de.kaizi99.bomberman.engine.maths.Vector3f;
 
 public class RenderableModel extends Renderable{
 
-	ShaderProgram shader;
+	StaticShader shader;
 	
 	int vaoID;
 	int vertexCount;
 	
-	public RenderableModel(Vector3[] positions, int[] indices) {
+	public RenderableModel(Vector3f[] positions, int[] indices) {
 		shader = new StaticShader();
 		vertexCount = indices.length;
 		createVAO();
 		bindIndicesBuffer(indices);
 		storeDataInAttributeList(0, positions);
+		unbindVAO();
+	}
+	
+	public void prepareRendering(Matrix4f transform)
+	{
+		GL30.glBindVertexArray(vaoID);
+		GL20.glEnableVertexAttribArray(0);
+		shader.start();
+		shader.loadModelMatrix(transform);
+	}
+	
+	public void endRendering() {
+		shader.stop();
+		GL20.glDisableVertexAttribArray(0);
 		unbindVAO();
 	}
 	
@@ -33,14 +48,8 @@ public class RenderableModel extends Renderable{
 	}
 
 	@Override
-	public void Render(Vector3 pos, Vector3 rot, Vector3 scale) {
-		GL30.glBindVertexArray(vaoID);
-		GL20.glEnableVertexAttribArray(0);
-		shader.start();
+	public void Render() {
 		GL11.glDrawElements(GL11.GL_TRIANGLES, vertexCount, GL11.GL_UNSIGNED_INT, 0);
-		shader.stop();
-		GL20.glDisableVertexAttribArray(0);
-		unbindVAO();
 	}
 	
 	private void createVAO() {
@@ -49,7 +58,7 @@ public class RenderableModel extends Renderable{
 		ManualCleanup.vaos.add(vaoID);
 	}
 	
-	private void storeDataInAttributeList(int attributeNumber, Vector3[] data) {
+	private void storeDataInAttributeList(int attributeNumber, Vector3f[] data) {
 		int vboID = GL15.glGenBuffers();
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboID);
 		FloatBuffer buffer = storeDataInFloatBuffer(data);
@@ -71,9 +80,9 @@ public class RenderableModel extends Renderable{
 		GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
 	}
 	
-	private FloatBuffer storeDataInFloatBuffer(Vector3[] data) {
+	private FloatBuffer storeDataInFloatBuffer(Vector3f[] data) {
 		FloatBuffer buffer = BufferUtils.createFloatBuffer(data.length * 3);
-		for (Vector3 vec : data) {
+		for (Vector3f vec : data) {
 			buffer.put(vec.x);
 			buffer.put(vec.y);
 			buffer.put(vec.z);

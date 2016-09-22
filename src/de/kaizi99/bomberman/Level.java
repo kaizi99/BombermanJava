@@ -4,7 +4,6 @@ import java.util.List;
 
 import de.kaizi99.bomberman.engine.Renderable;
 import de.kaizi99.bomberman.engine.RenderableModel;
-import de.kaizi99.bomberman.engine.maths.Vector3;
 import de.kaizi99.bomberman.tiles.Tile;
 import de.kaizi99.bomberman.tiles.Tile.TileType;
 
@@ -57,11 +56,14 @@ public class Level extends Renderable{
 		}
 	}
 	
+	@Override
 	public void Update() {
 		
 	}
-	
-	public void Render(Vector3 pos, Vector3 rot, Vector3 scale) {
+
+	@Override
+	public void Render() {
+		// TODO Auto-generated method stub
 		
 	}
 

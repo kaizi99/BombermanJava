@@ -3,9 +3,14 @@ package de.kaizi99.bomberman.engine;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.FloatBuffer;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
+
+import de.kaizi99.bomberman.engine.maths.Matrix4f;
+import de.kaizi99.bomberman.engine.maths.Vector3f;
 
 public abstract class ShaderProgram {
 
@@ -22,6 +27,31 @@ public abstract class ShaderProgram {
 		bindAttributes();
 		GL20.glLinkProgram(programID);
 		GL20.glValidateProgram(programID);
+		getAllUniformLocations();
+	}
+	
+	protected abstract void getAllUniformLocations();
+	
+	protected int getUniformLocation(String uniformName) {
+		return GL20.glGetUniformLocation(programID, uniformName);
+	}
+	
+	protected void loadFloat(int location, float value) {
+		GL20.glUniform1f(location, value);
+	}
+	
+	protected void loadVector(int location, Vector3f vector) {
+		GL20.glUniform3f(location, vector.x, vector.y, vector.z);
+	}
+	
+	protected void loadBoolean(int location, boolean value) {
+		float toLoad = 0;
+		if (value) toLoad = 1;
+		GL20.glUniform1f(location, toLoad);
+	}
+	
+	protected void loadMatrix(int location, Matrix4f matrix) {
+		GL20.glUniformMatrix4fv(location, false, matrix.getBuffer());
 	}
 	
 	public void start() {

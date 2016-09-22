@@ -2,9 +2,10 @@ package de.kaizi99.bomberman.engine;
 
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GL11;
 
 import de.kaizi99.bomberman.Level;
-import de.kaizi99.bomberman.engine.maths.Vector3;
+import de.kaizi99.bomberman.engine.maths.Vector3f;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -18,12 +19,12 @@ public class Engine {
 	private long window;
 	Level currentLevel;
 	
-	RenderableModel testObject;
-	Vector3[] vertecies = {
-			new Vector3(-0.5f, 0.5f, 0.0f),
-			new Vector3(-0.5f, -0.5f, 0.0f),
-			new Vector3(0.5f, -0.5f, 0.0f),
-			new Vector3(0.5f, 0.5f, 0.0f),
+	Entity testObject;
+	Vector3f[] vertecies = {
+			new Vector3f(-0.5f, 0.5f, 0.0f),
+			new Vector3f(-0.5f, -0.5f, 0.0f),
+			new Vector3f(0.5f, -0.5f, 0.0f),
+			new Vector3f(0.5f, 0.5f, 0.0f),
 	};
 	
 	int[] indices = {
@@ -86,20 +87,17 @@ public class Engine {
 	}
 	
 	private void initScene() {
-		testObject = new RenderableModel(vertecies, indices);
+		testObject = new Entity(new RenderableModel(vertecies, indices), new Vector3f(), 0.0f, 0.0f, 0.0f, 1.0f);
 		currentLevel = new Level(11, 11);
 	}
 	
 	private void loop() {
 		glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
 		while (!glfwWindowShouldClose(window)) {
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			
-			currentLevel.Update();
-			currentLevel.Render(new Vector3(0.0f), new Vector3(0.0f), new Vector3(1.0f));
+			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 			
 			testObject.Update();
-			testObject.Render(new Vector3(0.0f), new Vector3(0.0f), new Vector3(1.0f));
+			testObject.Render();
 			
 			glfwSwapBuffers(window);
 			glfwPollEvents();
