@@ -23,9 +23,12 @@ public class Engine {
 			new Vector3(-0.5f, 0.5f, 0.0f),
 			new Vector3(-0.5f, -0.5f, 0.0f),
 			new Vector3(0.5f, -0.5f, 0.0f),
-			new Vector3(0.5f, -0.5f, 0.0f),
 			new Vector3(0.5f, 0.5f, 0.0f),
-			new Vector3(-0.5f, 0.5f, 0.0f)
+	};
+	
+	int[] indices = {
+			0, 1, 3,
+			3, 1, 2
 	};
 	
 	public Engine(int width, int height) {
@@ -83,7 +86,7 @@ public class Engine {
 	}
 	
 	private void initScene() {
-		testObject = new RenderableModel(vertecies);
+		testObject = new RenderableModel(vertecies, indices);
 		currentLevel = new Level(11, 11);
 	}
 	

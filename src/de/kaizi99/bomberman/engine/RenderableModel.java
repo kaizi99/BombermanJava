@@ -1,6 +1,7 @@
 package de.kaizi99.bomberman.engine;
 
 import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
@@ -15,9 +16,10 @@ public class RenderableModel extends Renderable{
 	int vaoID;
 	int vertexCount;
 	
-	public RenderableModel(Vector3[] positions) {
-		vertexCount = positions.length;
+	public RenderableModel(Vector3[] positions, int[] indices) {
+		vertexCount = indices.length;
 		createVAO();
+		bindIndicesBuffer(indices);
 		storeDataInAttributeList(0, positions);
 		unbindVAO();
 	}
@@ -31,7 +33,7 @@ public class RenderableModel extends Renderable{
 	public void Render(Vector3 pos, Vector3 rot, Vector3 scale) {
 		GL30.glBindVertexArray(vaoID);
 		GL20.glEnableVertexAttribArray(0);
-		GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, vertexCount);
+		GL11.glDrawElements(GL11.GL_TRIANGLES, vertexCount, GL11.GL_UNSIGNED_INT, 0);
 		GL20.glDisableVertexAttribArray(0);
 		unbindVAO();
 	}
@@ -55,7 +57,15 @@ public class RenderableModel extends Renderable{
 	private void unbindVAO() {
 		GL30.glBindVertexArray(0);
 	}
-
+	
+	private void bindIndicesBuffer(int[] indices) {
+		int vboID = GL15.glGenBuffers();
+		ManualCleanup.vbos.add(vboID);
+		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboID);
+		IntBuffer buffer = storeDataInIntBuffer(indices);
+		GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
+	}
+	
 	private FloatBuffer storeDataInFloatBuffer(Vector3[] data) {
 		FloatBuffer buffer = BufferUtils.createFloatBuffer(data.length * 3);
 		for (Vector3 vec : data) {
@@ -64,6 +74,14 @@ public class RenderableModel extends Renderable{
 			buffer.put(vec.z);
 		}
 		buffer.flip();
+		return buffer;
+	}
+	
+	private IntBuffer storeDataInIntBuffer(int[] data) {
+		IntBuffer buffer = BufferUtils.createIntBuffer(data.length);
+		buffer.put(data);
+		buffer.flip();
+		
 		return buffer;
 	}
 }

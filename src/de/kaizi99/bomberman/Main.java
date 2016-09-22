@@ -5,7 +5,7 @@ import de.kaizi99.bomberman.engine.Engine;
 public class Main {
 
 	public static void main(String[] args) {
-		new Engine(600, 600);
+		new Engine(1280, 720);
 	}
 	
 }
