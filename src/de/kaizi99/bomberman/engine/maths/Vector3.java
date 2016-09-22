@@ -6,6 +6,12 @@ public class Vector3 {
 	public float y;
 	public float z;
 	
+	public Vector3() {
+		x = 0.0f;
+		y = 0.0f;
+		z = 0.0f;
+	}
+	
 	public Vector3(float x, float y, float z) {
 		this.x = x;
 		this.y = y;
@@ -16,6 +22,12 @@ public class Vector3 {
 		this.x = x;
 		this.y = x;
 		this.z = x;
+	}
+	
+	public Vector3(Vector3 old) {
+		x = old.x;
+		y = old.y;
+		z = old.z;
 	}
 	
 }

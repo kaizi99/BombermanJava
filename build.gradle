@@ -4,7 +4,7 @@ plugins {
   id 'application'
 }
 
-sourceCompatibility = 1.7
+sourceCompatibility = 1.8
 sourceSets.main.java.srcDirs = ['src']
 
 mainClassName = "de.kaizi99.bomberman.Main"

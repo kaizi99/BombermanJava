@@ -38,7 +38,7 @@ public class Engine {
 		// Configure our window
 		glfwDefaultWindowHints(); // optional, the current window hints are already the default
 		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // the window will stay hidden after creation
-		glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE); // the window will be resizable
+		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE); // the window wont be resizable
 
 		// Create the window
 		window = glfwCreateWindow(width, height, "Bomberman Clone", NULL, NULL);
@@ -77,7 +77,7 @@ public class Engine {
 		GL.createCapabilities();
 		glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
 		while (!glfwWindowShouldClose(window)) {
-			glClear(GL_COLOR_BUFFER_BIT);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			
 			currentLevel.Update();
 			currentLevel.Render(new Vector3(0.0f), new Vector3(0.0f), new Vector3(1.0f));
