@@ -18,12 +18,23 @@ public class Engine {
 	private long window;
 	Level currentLevel;
 	
+	RenderableModel testObject;
+	Vector3[] vertecies = {
+			new Vector3(-0.5f, 0.5f, 0.0f),
+			new Vector3(-0.5f, -0.5f, 0.0f),
+			new Vector3(0.5f, -0.5f, 0.0f),
+			new Vector3(0.5f, -0.5f, 0.0f),
+			new Vector3(0.5f, 0.5f, 0.0f),
+			new Vector3(-0.5f, 0.5f, 0.0f)
+	};
+	
 	public Engine(int width, int height) {
 		this.width = width;
 		this.height = height;
 		initOpenGL();
 		initScene();
 		loop();
+		cleanup();
 	}
 	
 	private void initOpenGL() {
@@ -67,14 +78,16 @@ public class Engine {
 		
 		// Make the window visible
 		glfwShowWindow(window);
+		
+		GL.createCapabilities();
 	}
 	
 	private void initScene() {
+		testObject = new RenderableModel(vertecies);
 		currentLevel = new Level(11, 11);
 	}
 	
 	private void loop() {
-		GL.createCapabilities();
 		glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
 		while (!glfwWindowShouldClose(window)) {
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -82,8 +95,15 @@ public class Engine {
 			currentLevel.Update();
 			currentLevel.Render(new Vector3(0.0f), new Vector3(0.0f), new Vector3(1.0f));
 			
+			testObject.Update();
+			testObject.Render(new Vector3(0.0f), new Vector3(0.0f), new Vector3(1.0f));
+			
 			glfwSwapBuffers(window);
 			glfwPollEvents();
 		}
+	}
+	
+	private void cleanup() {
+		ManualCleanup.Cleanup();
 	}
 }
