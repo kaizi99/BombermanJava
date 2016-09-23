@@ -28,12 +28,13 @@ public class RenderableModel extends Renderable{
 		unbindVAO();
 	}
 	
-	public void prepareRendering(Matrix4f transform)
+	public void prepareRendering(Matrix4f transform, Camera camera)
 	{
 		GL30.glBindVertexArray(vaoID);
 		GL20.glEnableVertexAttribArray(0);
 		shader.start();
 		shader.loadModelMatrix(transform);
+		shader.loadCamera(camera);
 	}
 	
 	public void endRendering() {

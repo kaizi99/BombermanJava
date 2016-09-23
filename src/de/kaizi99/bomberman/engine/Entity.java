@@ -12,8 +12,9 @@ public class Entity{
 	public float scale;
 	
 	float time;
+	Camera c;
 	
-	public Entity(RenderableModel model, Vector3f position, float rx, float ry, float rz, float scale) {
+	public Entity(RenderableModel model, Vector3f position, float rx, float ry, float rz, float scale, Camera c) {
 		super();
 		this.model = model;
 		this.position = position;
@@ -21,6 +22,7 @@ public class Entity{
 		this.ry = ry;
 		this.rz = rz;
 		this.scale = scale;
+		this.c = c;
 	}
 	
 	public void move(float dx, float dy, float dz) {
@@ -38,10 +40,12 @@ public class Entity{
 	public void Update() {
 		time += 0.1;
 		position.x = (float) Math.sin(time);
+		
+		//position.z = 4;
 	}
 
 	public void Render() {
-		model.prepareRendering(Maths.createTransformationMatrix(position, rx, ry, rz, scale));
+		model.prepareRendering(Maths.createTransformationMatrix(position, rx, ry, rz, scale), c);
 		model.Render();
 		model.endRendering();
 	}

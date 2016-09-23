@@ -32,6 +32,8 @@ public class Engine {
 			3, 1, 2
 	};
 	
+	Camera camera;
+	
 	public Engine(int width, int height) {
 		this.width = width;
 		this.height = height;
@@ -87,7 +89,8 @@ public class Engine {
 	}
 	
 	private void initScene() {
-		testObject = new Entity(new RenderableModel(vertecies, indices), new Vector3f(), 0.0f, 0.0f, 0.0f, 1.0f);
+		camera = new Camera(width / height, 90);
+		testObject = new Entity(new RenderableModel(vertecies, indices), new Vector3f(), 0.0f, 0.0f, 0.0f, 1.0f, camera);
 		currentLevel = new Level(11, 11);
 	}
 	
@@ -95,6 +98,8 @@ public class Engine {
 		glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
 		while (!glfwWindowShouldClose(window)) {
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+			
+			camera.Update();
 			
 			testObject.Update();
 			testObject.Render();

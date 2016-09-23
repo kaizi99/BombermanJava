@@ -54,6 +54,10 @@ public abstract class ShaderProgram {
 		GL20.glUniformMatrix4fv(location, false, matrix.getBuffer());
 	}
 	
+	protected void loadMatrix(int location, Matrix4f matrix, boolean transposed) {
+		GL20.glUniformMatrix4fv(location, transposed, matrix.getBuffer());
+	}
+	
 	public void start() {
 		GL20.glUseProgram(programID);
 	}

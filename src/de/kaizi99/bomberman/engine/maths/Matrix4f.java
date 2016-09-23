@@ -42,6 +42,39 @@ public class Matrix4f {
         setIdentity();
     }
 
+    public static Matrix4f view(Vector3f cameraPositon, Vector3f cameraTarget, Vector3f up) {
+    	Vector4f col1 = new Vector4f();
+    	Vector4f col2 = new Vector4f();
+    	Vector4f col3 = new Vector4f();
+    	Vector4f col4 = new Vector4f();
+    	
+    	Vector3f zaxis = new Vector3f(cameraPositon.subtract(cameraTarget)).normalize();
+    	Vector3f xaxis = new Vector3f(up.cross(zaxis)).normalize();
+    	Vector3f yaxis = new Vector3f(zaxis.cross(xaxis));
+    	
+    	col1.x = xaxis.x;
+    	col1.y = xaxis.y;
+    	col1.z = xaxis.z;
+    	col1.w = -xaxis.dot(cameraPositon);
+    	
+    	col2.x = yaxis.x;
+    	col2.y = yaxis.y;
+    	col2.z = yaxis.z;
+    	col2.w = -yaxis.dot(cameraPositon);
+    	
+    	col3.x = zaxis.x;
+    	col3.y = zaxis.y;
+    	col3.z = zaxis.z;
+    	col3.w = -zaxis.dot(cameraPositon);
+    	
+    	col4.x = 0.0f;
+    	col4.y = 0.0f;
+    	col4.z = 0.0f;
+    	col4.w = 1.0f;
+    	
+    	return new Matrix4f(col1, col2, col3, col4);
+    }
+    
     /**
      * Creates a 4x4 matrix with specified columns.
      *
